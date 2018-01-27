@@ -27,16 +27,26 @@ for i in range(16,127):
     core.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
     analogdeck.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
     sleep(1 / 1000)
+# End of "startup" sequence
 
 
+
+
+# Tests the firing of the solenoids slowly with increasing speed
 for i in reversed(range(5,10)):
+    # Test the firing at each frequency this number of times before moving on
     for j in range(0,10):
-        for k in range(0,4):
-            analogdeck.solenoiddrivers.engage(0)
 
+        # Fires the solenoids
+        for k in range(0,4):
+            analogdeck.solenoiddrivers.engage(k)
+
+        # Frequency is determined by the 2^(i) in milliseconds
         sleep(2 ** i / 1000)
 
+        # Unfires the solenoids
         for k in range(0,4):
-            analogdeck.solenoiddrivers.disengage(0)
+            analogdeck.solenoiddrivers.disengage(k)
 
+        # Frequency is determined by the 2^(i) in milliseconds
         sleep(2 ** i / 1000)
