@@ -21,6 +21,8 @@ for i in range(0,3):
         analogdeck.rgbled.set(int(("0x00FFFF" + hex(j)[2:]), 16))
         sleep(1 / 1000)
 
+
+
 for i in range(0,4):
     core.rgbled.set(core.rgbled.COLOR_GREEN)
     analogdeck.rgbled.set(0)
