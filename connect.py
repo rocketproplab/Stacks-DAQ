@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import subinitial.stacks as stacks
 from time import sleep
 
