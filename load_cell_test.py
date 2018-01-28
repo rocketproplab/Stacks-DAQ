@@ -27,3 +27,13 @@ for i in range(16,127):
     analogdeck.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
     sleep(1 / 1000)
 # End of "startup" sequence
+
+
+
+# Set the voltage of the something
+
+# Set excitation voltage to +12V as the max on the load cell is +18V and the
+# max voltage of the ADC input is +13V and the recommended is +2.5V
+
+
+# Set up ADC
