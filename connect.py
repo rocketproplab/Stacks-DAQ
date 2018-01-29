@@ -4,7 +4,7 @@ import subinitial.stacks as stacks
 from time import sleep
 import math
 
-core = stacks.Core(host="192.168.1.49")
+core = stacks.Core(host="192.168.2.49")
 
 analogdeck = stacks.AnalogDeck(core, bus_address=2)
 
