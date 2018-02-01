@@ -4,4 +4,4 @@ python:
   - "3.6"
 
 install:
-  - pip3 install --user git+https://bitbucket.org/subinitial/subinitial.git
+  - pip3 install git+https://bitbucket.org/subinitial/subinitial.git
