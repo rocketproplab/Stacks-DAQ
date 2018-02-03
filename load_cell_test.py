@@ -11,7 +11,8 @@ analogdeck = stacks.AnalogDeck(core, bus_address=2)
 
 dmm = analogdeck.dmm
 
-SAMPLE_TIME = 2.0 # Measured in seconds
+EXCITATION_VOLTAGE = 12 # Volts
+SAMPLE_TIME = 2.0 # Seconds
 WAVE_GEN_SAMPLES = 10
 
 # Change leds for no real reason except it will look like its doing something
@@ -54,7 +55,11 @@ analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
 # analogdeck.sourcemeter.set_sourcevoltage(2.5)
 
-# Set up ADCanalogdeck.dmm.stop
+# Load the csv file
+csv_file = open('load_cell_test_num.csv', "w")
+csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUOTE_ALL)
+
+# Set up ADC
 dmm.set_channelranges(range0=dmm.RANGE_AUTO)
 
 dmm.stream_arm(channel=0, samplerate=dmm.SAMPLERATE_1200HZ, range_=dmm.RANGE_AUTO, timeout=10)
@@ -68,7 +73,10 @@ while (time.time() - start) < SAMPLE_TIME:
 
         # Do something with sample
         print("sample time: {}s, measurement: {} V".format(time.time() - start, sample))
+        csv_writer.writerow([(time.time() - start), sample])
+
+        if (time.time() - start) < SAMPLE_TIME:
+            break
 
 
-        # if (time.time() - start) < SAMPLE_TIME:
-        #     break
+csv_file.close()
