@@ -2,6 +2,8 @@
 
 import subinitial.stacks as stacks
 import time
+import math
+import csv
 
 core = stacks.Core(host="192.168.2.49")
 
@@ -9,7 +11,8 @@ analogdeck = stacks.AnalogDeck(core, bus_address=2)
 
 dmm = analogdeck.dmm
 
-SAMPLE_TIME = 120 # Measured in seconds
+SAMPLE_TIME = 2.0 # Measured in seconds
+WAVE_GEN_SAMPLES = 10
 
 # Change leds for no real reason except it will look like its doing something
 # really important
@@ -37,12 +40,13 @@ for i in range(16,127):
 
 # Set the voltage of the something
 
-
+sine_samples = []
+for i in range(WAVE_GEN_SAMPLES):
+    sine_samples.append(2 * (math.sin( 2 * math.pi * i/ WAVE_GEN_SAMPLES)))
 
 analogdeck.wavegen.set_dc(3.3)
-analogdeck.wavegen.update_waveform(samplerate_hz=3, samples=[-5,-4,-3,-2,-1,0,1,2,3,4,5] * 30)
+analogdeck.wavegen.update_waveform(samplerate_hz=500, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
-# analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_DC)
 
 
 # Set excitation voltage to +12V as the max on the load cell is +18V and the
@@ -53,13 +57,18 @@ analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 # Set up ADCanalogdeck.dmm.stop
 dmm.set_channelranges(range0=dmm.RANGE_AUTO)
 
-dmm.stream_arm(channel=0, samplerate=dmm.SAMPLERATE_10HZ, range_=dmm.RANGE_AUTO, timeout=10)
+dmm.stream_arm(channel=0, samplerate=dmm.SAMPLERATE_1200HZ, range_=dmm.RANGE_AUTO, timeout=10)
 
-start = time.time()
 dmm.stream_trigger()
+start = time.time()
+
 
 while (time.time() - start) < SAMPLE_TIME:
     for sample in dmm.stream():
 
         # Do something with sample
-        print(sample)
+        print("sample time: {}s, measurement: {} V".format(time.time() - start, sample))
+
+
+        # if (time.time() - start) < SAMPLE_TIME:
+        #     break
