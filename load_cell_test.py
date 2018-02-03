@@ -73,11 +73,15 @@ start = time.time()
 while (time.time() - start) < SAMPLE_TIME:
     for sample in dmm.stream():
 
-        # Do something with sample
-        print("sample time: {}s, measurement: {} V".format(time.time() - start, sample))
-
-        force_reading = (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * sample
+        force_reading = sample * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
+        ''' Coverts the voltage reading of the load cell to a pount force
+            force reading (lbf) = [Sample (V)]
+                                * [LOAD_CELL_FORCE (lbf) / LOAD_CELL_SCALE (mv)]
+                                * [1000 (mv/V)]
+        '''
         csv_writer.writerow([(time.time() - start), sample, force_reading])
+        # Do something with sample
+        print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, sample, force_reading))
 
         if (time.time() - start) < SAMPLE_TIME:
             break
