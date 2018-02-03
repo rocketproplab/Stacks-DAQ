@@ -14,6 +14,9 @@ dmm = analogdeck.dmm
 EXCITATION_VOLTAGE = 12 # Volts
 SAMPLE_TIME = 2.0 # Seconds
 WAVE_GEN_SAMPLES = 10
+RATED_OUTPUT = 2 # mV/V
+LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
+LOAD_CELL_FORCE = 1000 #lbf, pound force
 
 # Change leds for no real reason except it will look like its doing something
 # really important
@@ -45,7 +48,6 @@ sine_samples = []
 for i in range(WAVE_GEN_SAMPLES):
     sine_samples.append(2 * (math.sin( 2 * math.pi * i/ WAVE_GEN_SAMPLES)))
 
-analogdeck.wavegen.set_dc(3.3)
 analogdeck.wavegen.update_waveform(samplerate_hz=500, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
@@ -56,7 +58,7 @@ analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 # analogdeck.sourcemeter.set_sourcevoltage(2.5)
 
 # Load the csv file
-csv_file = open('load_cell_test_num.csv', "w")
+csv_file = open('ouput_data/load_cell_test_num.csv', "w")
 csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUOTE_ALL)
 
 # Set up ADC
@@ -73,7 +75,9 @@ while (time.time() - start) < SAMPLE_TIME:
 
         # Do something with sample
         print("sample time: {}s, measurement: {} V".format(time.time() - start, sample))
-        csv_writer.writerow([(time.time() - start), sample])
+
+        force_reading = (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * sample
+        csv_writer.writerow([(time.time() - start), sample, force_reading])
 
         if (time.time() - start) < SAMPLE_TIME:
             break
