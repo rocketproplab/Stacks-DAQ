@@ -11,6 +11,10 @@ analogdeck = stacks.AnalogDeck(core, bus_address=2)
 
 dmm = analogdeck.dmm
 
+# Used for that totally sick LED startup sequence
+LED_ITER = 255
+
+## Used for the actual load cell data calculation
 EXCITATION_VOLTAGE = 12 # Volts
 SAMPLE_TIME = 2.0 # Seconds
 WAVE_GEN_SAMPLES = 10
@@ -21,23 +25,16 @@ LOAD_CELL_FORCE = 1000 #lbf, pound force
 # Change leds for no real reason except it will look like its doing something
 # really important
 for i in range(0,2):
-    for j in range(16,255):
+    for j in range(LED_ITER):
 
-        core.rgbled.set(int(("0x00FF00" + hex(j)[2:]), 16))
-        analogdeck.rgbled.set(int(("0x00FF00" + hex(j)[2:]), 16))
-        time.sleep(1 / 1000)
-
-    for j in reversed(range(16,255)):
-
-        core.rgbled.set(int(("0x00FF00" + hex(j)[2:]), 16))
-        analogdeck.rgbled.set(int(("0x00FF00" + hex(j)[2:]), 16))
+        core.rgbled.set(int(("00FF00FF" + "{:02x}".format(round(math.sin(j/ LED_ITER * math.pi) * 255))), 16))
+        analogdeck.rgbled.set(int(("0xFF00FF" + "{:02x}".format(round(math.sin(j/ LED_ITER * math.pi) * 255))), 16))
         time.sleep(1 / 1000)
 
 for i in range(16,127):
 
     core.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
     analogdeck.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
-    time.sleep(1 / 1000)
 # End of "startup" sequence
 
 
@@ -58,7 +55,7 @@ analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 # analogdeck.sourcemeter.set_sourcevoltage(2.5)
 
 # Load the csv file
-csv_file = open('ouput_data/load_cell_test_num.csv', "w")
+csv_file = open('output_data/load_cell_test_num.csv', "w")
 csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUOTE_ALL)
 
 # Set up ADC
