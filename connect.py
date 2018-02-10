@@ -16,7 +16,7 @@ for i in range(4):
 
         core.rgbled.set(int(("0x00FF00" + "{:02x}".format(round(math.sin(j/ LED_ITER * math.pi) * 255))), 16))
         analogdeck.rgbled.set(int(("0x00FF00" + "{:02x}".format(round(math.sin(j/ LED_ITER * math.pi) * 255))), 16))
-        sleep(1 / 1000)
+        sleep(3 / 1000)
 
     # for j in reversed(range(16,255)):
     #
