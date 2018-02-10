@@ -15,6 +15,7 @@ dmm = analogdeck.dmm
 LED_ITER = 255
 
 ## Used for the actual load cell data calculation
+NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
 SAMPLE_TIME = 2.0 # Seconds
 WAVE_GEN_SAMPLES = 10
@@ -59,29 +60,41 @@ csv_file = open('output_data/load_cell_test_num.csv', "w")
 csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUOTE_ALL)
 
 # Set up ADC
-dmm.set_channelranges(range0=dmm.RANGE_AUTO)
+# dmm.set_channelranges(range0=dmm.RANGE_AUTO)
+#
+# dmm.stream_arm(channel=0, samplerate=dmm.SAMPLERATE_1200HZ, range_=dmm.RANGE_AUTO, timeout=10)
+#
+# dmm.stream_trigger()
 
-dmm.stream_arm(channel=0, samplerate=dmm.SAMPLERATE_1200HZ, range_=dmm.RANGE_AUTO, timeout=10)
+dmm.freerun(mask=0b111, samplerate=dmm.SAMPLERATE_14400HZ)
+force_reading = []
+for i in range(NUM_LOAD_CELLS):
+    force_reading.append(0)
+voltage_samples = []
+num_samples = 0
 
-dmm.stream_trigger()
 start = time.time()
 
-
 while (time.time() - start) < SAMPLE_TIME:
-    for sample in dmm.stream():
 
-        force_reading = sample * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
+        voltage_samples = dmm.measure(mask=0b111, samplerate = dmm.SAMPLERATE_14400HZ)
+
+        for i in range(NUM_LOAD_CELLS):
+            force_reading[i] = voltage_samples[i] * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
+        # force_reading = sample * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
         ''' Coverts the voltage reading of the load cell to a pount force
             force reading (lbf) = [Sample (V)]
                                 * [LOAD_CELL_FORCE (lbf) / LOAD_CELL_SCALE (mv)]
                                 * [1000 (mv/V)]
         '''
-        csv_writer.writerow([(time.time() - start), sample, force_reading])
+        # csv_writer.writerow([(time.time() - start), voltage_samples[0], force_reading[0]])
         # Do something with sample
-        print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, sample, force_reading))
+        # print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, voltage_samples[0], force_reading[0]))
 
-        if (time.time() - start) < SAMPLE_TIME:
+        num_samples+=1
+
+        if (time.time() - start) > SAMPLE_TIME:
             break
 
-
+print(num_samples)
 csv_file.close()
