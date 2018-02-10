@@ -77,8 +77,9 @@ start = time.time()
 
 while (time.time() - start) < SAMPLE_TIME:
 
-        voltage_samples = dmm.measure(mask=0b111, samplerate = dmm.SAMPLERATE_14400HZ)
-
+        # voltage_samples = dmm.measure(mask=0b111, samplerate=dmm.SAMPLERATE_14400HZ, pollingdelay=0.0)
+        voltage_samples = dmm.get_results()
+        #
         for i in range(NUM_LOAD_CELLS):
             force_reading[i] = voltage_samples[i] * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
         # force_reading = sample * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
@@ -87,14 +88,14 @@ while (time.time() - start) < SAMPLE_TIME:
                                 * [LOAD_CELL_FORCE (lbf) / LOAD_CELL_SCALE (mv)]
                                 * [1000 (mv/V)]
         '''
-        # csv_writer.writerow([(time.time() - start), voltage_samples[0], force_reading[0]])
+        csv_writer.writerow([(time.time() - start), voltage_samples[0], force_reading[0]])
         # Do something with sample
-        # print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, voltage_samples[0], force_reading[0]))
+        print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, voltage_samples[0], force_reading[0]))
 
         num_samples+=1
 
-        if (time.time() - start) > SAMPLE_TIME:
-            break
+        # if (time.time() - start) > SAMPLE_TIME:
+            # break
 
 print(num_samples)
 csv_file.close()
