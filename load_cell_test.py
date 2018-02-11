@@ -17,8 +17,8 @@ LED_ITER = 255
 ## Used for the actual load cell data calculation
 NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
-SAMPLE_TIME = 60.0 # Seconds
-WAVE_GEN_SAMPLES = 10
+SAMPLE_TIME = 20 # Seconds
+WAVE_GEN_SAMPLES = 100
 RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
 LOAD_CELL_FORCE = 1000 #lbf, pound force
@@ -44,9 +44,9 @@ for i in range(16,127):
 
 sine_samples = []
 for i in range(WAVE_GEN_SAMPLES):
-    sine_samples.append(2 * (math.sin( 2 * math.pi * i/ WAVE_GEN_SAMPLES)))
+    sine_samples.append(LOAD_CELL_SCALE/ 1000 * 196 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)))
 
-analogdeck.wavegen.update_waveform(samplerate_hz=500, samples=sine_samples)
+analogdeck.wavegen.update_waveform(samplerate_hz=10, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
 
@@ -57,7 +57,7 @@ analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
 # Load the csv file
 csv_file = open('output_data/load_cell_test_num.csv', "w")
-csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUOTE_ALL)
+csv_writer = csv.writer(csv_file, delimiter=' ', quotechar='"', quoting=csv.QUOTE_ALL)
 
 # Set up ADC
 # dmm.set_channelranges(range0=dmm.RANGE_AUTO)
@@ -69,7 +69,7 @@ csv_writer = csv.writer(csv_file, delimiter='\n', quotechar='"', quoting=csv.QUO
 dmm.freerun(mask=0b111, samplerate=dmm.SAMPLERATE_14400HZ)
 
 # Initializes sample lists
-num_samples = 0
+csv_row = []
 voltage_samples = []
 force_reading = []
 for i in range(NUM_LOAD_CELLS):
@@ -82,6 +82,7 @@ while (time.time() - start) < SAMPLE_TIME:
         # Gets the voltages of all the DMMs on the stacks
         voltage_samples = dmm.get_results()
 
+        csv_row.clear()
         # Calculates the force on each of load cells
         for i in range(NUM_LOAD_CELLS):
             force_reading[i] = voltage_samples[i] * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
@@ -91,12 +92,15 @@ while (time.time() - start) < SAMPLE_TIME:
                                     * [1000 (mv/V)]
             '''
             # Prints data to a csv file
-            csv_writer.writerow([i, (time.time() - start), voltage_samples[i], force_reading[i]])
 
+            csv_row += [i, (time.time() - start), voltage_samples[i], force_reading[i]]
             # Prints data to the console
             print("loadcell: {}, sample time: {}s, measurement: {} V, force: {} lbf".format(i, time.time() - start, voltage_samples[0], force_reading[0]))
 
-        # for i in range(NUM_LOAD_CELLS):
+        # print(csv_row)
+        csv_writer.writerow(csv_row)
+
+        time.sleep(10/1000)
 
 
 csv_file.close()
