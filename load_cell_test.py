@@ -17,7 +17,7 @@ LED_ITER = 255
 ## Used for the actual load cell data calculation
 NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
-SAMPLE_TIME = 20 # Seconds
+SAMPLE_TIME = 2.0 # Seconds
 WAVE_GEN_SAMPLES = 100
 RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
@@ -44,9 +44,9 @@ for i in range(16,127):
 
 sine_samples = []
 for i in range(WAVE_GEN_SAMPLES):
-    sine_samples.append(LOAD_CELL_SCALE/ 1000 * 196 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)))
+    sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)))
 
-analogdeck.wavegen.update_waveform(samplerate_hz=10, samples=sine_samples)
+analogdeck.wavegen.update_waveform(samplerate_hz=60, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
 
@@ -69,38 +69,42 @@ csv_writer = csv.writer(csv_file, delimiter=' ', quotechar='"', quoting=csv.QUOT
 dmm.freerun(mask=0b111, samplerate=dmm.SAMPLERATE_14400HZ)
 
 # Initializes sample lists
+count = 0
 csv_row = []
 voltage_samples = []
 force_reading = []
 for i in range(NUM_LOAD_CELLS):
+    csv_row.append(0.0)
     force_reading.append(0)
 
 # Starts the timer
 start = time.time()
 
 while (time.time() - start) < SAMPLE_TIME:
-        # Gets the voltages of all the DMMs on the stacks
-        voltage_samples = dmm.get_results()
+    # Gets the voltages of all the DMMs on the stacks
+    voltage_samples = dmm.get_results()
 
-        csv_row.clear()
-        # Calculates the force on each of load cells
-        for i in range(NUM_LOAD_CELLS):
-            force_reading[i] = voltage_samples[i] * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
-            ''' Coverts the voltage reading of the load cell to a pount force
-                force reading (lbf) = [Sample (V)]
-                                    * [LOAD_CELL_FORCE (lbf) / LOAD_CELL_SCALE (mv)]
-                                    * [1000 (mv/V)]
-            '''
-            # Prints data to a csv file
+    # csv_row.clear()
+    # Calculates the force on each of load cells
+    for i in range(NUM_LOAD_CELLS):
+        force_reading[i] = voltage_samples[i] * (LOAD_CELL_FORCE / LOAD_CELL_SCALE) * 1000
+        ''' Coverts the voltage reading of the load cell to a pount force
+            force reading (lbf) = [Sample (V)]
+                                * [LOAD_CELL_FORCE (lbf) / LOAD_CELL_SCALE (mv)]
+                                * [1000 (mv/V)]
+        '''
+        # Prints data to a csv file
 
-            csv_row += [i, (time.time() - start), voltage_samples[i], force_reading[i]]
-            # Prints data to the console
-            print("loadcell: {}, sample time: {}s, measurement: {} V, force: {} lbf".format(i, time.time() - start, voltage_samples[0], force_reading[0]))
+        csv_row[i] = [i, (time.time() - start), voltage_samples[i], force_reading[i]]
+        # Prints data to the console
+        print("loadcell: {}, sample time: {}s, measurement: {} V, force: {} lbf".format(i, time.time() - start, voltage_samples[i], force_reading[i]))
 
-        # print(csv_row)
-        csv_writer.writerow(csv_row)
+    # print(csv_row)
+    csv_writer.writerow(csv_row)
 
-        time.sleep(10/1000)
+    count +=1
 
 
+samples_per_sec = count / SAMPLE_TIME
+print("Samples: {}, Elapsed Time: {}s, Samples per Second {} Hz".format(count, SAMPLE_TIME, samples_per_sec))
 csv_file.close()
