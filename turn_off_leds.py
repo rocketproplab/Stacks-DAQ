@@ -6,6 +6,6 @@ core = stacks.Core(host="192.168.2.49")
 
 analogdeck = stacks.AnalogDeck(core, bus_address=2)
 
-core.rgbled.set(0)
+core.rgbled.set(int("0xFF00FF04",16))
 
-analogdeck.rgbled.set(0)
+analogdeck.rgbled.set(int("0xFF00FF04",16))

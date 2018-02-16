@@ -16,7 +16,7 @@ dmm = analogdeck.dmm
 NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
 SAMPLE_TIME = 3.0 # Seconds
-WAVE_GEN_SAMPLES = 100
+WAVE_GEN_SAMPLES = 200
 RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
 LOAD_CELL_FORCE = 1000 #lbf, pound force
@@ -31,7 +31,7 @@ for i in range(16,127):
 
 sine_samples = []
 for i in range(WAVE_GEN_SAMPLES):
-    sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)) ** 8)
+    sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)) ** 2)
 
-analogdeck.wavegen.update_waveform(samplerate_hz=60, samples=sine_samples)
+analogdeck.wavegen.update_waveform(samplerate_hz=200, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
