@@ -71,7 +71,7 @@ while (time.time() - start) < SAMPLE_TIME:
 
         csv_row += [i,(time.time() - start), voltage_sample[i], force_reading[i]]
         # Prints data to the console
-        print("sample time: {}s, measurement: {} V, force: {} lbf".format(time.time() - start, voltage_sample[i], force_reading[i]))
+        print("Load cell : {},sample time: {}s, measurement: {} V, force: {} lbf".format(i, time.time() - start, voltage_sample[i], force_reading[i]))
 
         # print(csv_row)
     csv_writer.writerow(csv_row)
