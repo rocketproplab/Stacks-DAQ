@@ -15,7 +15,7 @@ dmm = analogdeck.dmm
 ## Used for the actual load cell data calculation
 NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
-SAMPLE_TIME = 3.0 # Seconds
+SAMPLE_TIME = 1.0 # Seconds
 WAVE_GEN_SAMPLES = 100
 RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
@@ -82,3 +82,10 @@ while (time.time() - start) < SAMPLE_TIME:
 samples_per_sec = count / SAMPLE_TIME
 print("Samples: {}, Elapsed Time: {}s, Samples per Second {} Hz".format(count, SAMPLE_TIME, samples_per_sec))
 csv_file.close()
+
+for i in range(16,127):
+
+    core.rgbled.set(int(("0xFF00FF" + hex(i)[2:]), 16))
+    analogdeck.rgbled.set(int(("0xFF00FF" + hex(i)[2:]), 16))
+    time.sleep(3/1000)
+# End of "startup" sequence
