@@ -23,6 +23,12 @@ ax.append(fig.add_subplot(left_gs[2,0]))
 ax.append(fig.add_subplot(right_gs[0,:]))
 # ax.append(fig.add_subplot(right_gs[1,]))
 
+ax[0].set_ylim(0,500)
+ax[1].set_ylim(0,500)
+ax[2].set_ylim(0,500)
+ax[3].set_ylim(0,1200)
+
+# print(type(ax[0]))
 
 # gs.set_title('Test Stand Static Fire')
 ax[0].set_title('Load Cell #1')
@@ -44,5 +50,3 @@ while(True):
     sample_count += 1
     if(sample_count > 500000):
         samples.pop()
-
-    plt.show()
