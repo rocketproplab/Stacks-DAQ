@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 
+# import numpy.random
+import math
+import random
+
 
 fig = plt.figure(tight_layout=True)
 gs = gridspec.GridSpec(nrows=1, ncols=2)
@@ -28,3 +32,17 @@ ax[2].set_title('Load Cell #3')
 ax[3].set_title('Total Load')
 
 plt.show()
+
+samples = []
+sample_count = 0
+while(True):
+
+    x  = random.gauss((math.sin(sample_count)) ** 2,0.1)
+    samples.append(x)
+    ax[0].plot(sample_count , samples, 'r--')
+
+    sample_count += 1
+    if(sample_count > 500000):
+        samples.pop()
+
+    plt.show()
