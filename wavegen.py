@@ -31,7 +31,7 @@ for i in range(16,127):
 
 sine_samples = []
 for i in range(WAVE_GEN_SAMPLES):
-    sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)) ** 2)
+    sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(4 * math.pi * i/ WAVE_GEN_SAMPLES)) ** 2)
 
 analogdeck.wavegen.update_waveform(samplerate_hz=200, samples=sine_samples)
 analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
