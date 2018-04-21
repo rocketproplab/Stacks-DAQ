@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -7,9 +7,16 @@ import matplotlib.animation as animation
 
 # import numpy.random
 import math
+import numpy as np
 import random
 
-ani = animation.FuncAnimation(fig, animate, interval=25)
+def animate(i, samples):
+
+    # First bracket is to get to the samples
+    for i in range(samples[]):
+
+
+# ani = animation.FuncAnimation(fig, animate, interval=25)#
 
 fig = plt.figure(tight_layout=True)
 gs = gridspec.GridSpec(nrows=1, ncols=2)
