@@ -15,7 +15,7 @@ dmm = analogdeck.dmm
 ## Used for the actual load cell data calculation
 NUM_LOAD_CELLS = 3
 EXCITATION_VOLTAGE = 12 # Volts
-SAMPLE_TIME = 1.0 # Seconds
+SAMPLE_TIME = 5.0 # Seconds
 WAVE_GEN_SAMPLES = 100
 RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV

@@ -10,27 +10,33 @@ import math
 import numpy as np
 import random
 
+NUM_LOAD_CELLS = 3
+
 t = np.arange(0.0, 5, 0.01)
-s1 = np.sin(2 * np.pi * t)
-s2 = np.exp(-t)
-s3 = np.sin(4 * np.pi * t)
+s1 = 200*np.sin(1 * np.pi * t) + 200
+s2 = 200*np.exp(-t)*np.sin(3* np.pi * t) + 250
+s3 = 200*np.sin(2 * np.pi * t)+225
 s4 = np.add(np.add(s1, s2), s3)
 
 # samples =
 #
 #
 #
-# def animate(i, samples):
-#
-#     # First bracket is to get to the samples
-#     for i in range(samples[]):
-#         samples[i].clear()
-#         samples[i].plot(samples)
+
+# sample_time = []
+samples = dict()
+
+def animate(i):
+
+    # First bracket is to get to the samples
+    for i in range(NUM_LOAD_CELLS):
+        samples[i].clear()
+        samples[i].plot(samples)
 
 
-# ani = animation.FuncAnimation(fig, animate, interval=25)#
+ani = animation.FuncAnimation(fig, animate, interval=25)#
 
-plt.ion()
+# plt.ion()
 fig = plt.figure(tight_layout=True)
 gs = gridspec.GridSpec(nrows=1, ncols=2)
 
@@ -46,16 +52,18 @@ ax.append(fig.add_subplot(right_gs[0,:], sharex=ax[0]))
 # ax.append(fig.add_subplot(right_gs[1,]))
 
 
+fig.suptitle('Test Stand Static Fire')
+
+ax[3].set_title('Total Load')
 ax[0].set_title('Load Cell #1')
 ax[1].set_title('Load Cell #2')
 ax[2].set_title('Load Cell #3')
 
-ax[3].set_title('Total Load')
 
-# ax[0].set_ylim(0,500)
-# ax[1].set_ylim(0,500)
-# ax[2].set_ylim(0,500)
-# ax[3].set_ylim(0,1200)
+ax[0].set_ylim(0,500)
+ax[1].set_ylim(0,500)
+ax[2].set_ylim(0,500)
+ax[3].set_ylim(0,1200)
 
 ax[0].plot(t, s1)
 ax[1].plot(t, s2)
@@ -64,7 +72,6 @@ ax[3].plot(t, s4)
 
 # print(type(ax[0]))
 
-fig.suptitle('Test Stand Static Fire')
 
 
 plt.show()
