@@ -5,10 +5,9 @@ import time
 import math
 import csv
 
+# Connects to the Stacks
 core = stacks.Core(host="192.168.2.49")
-
 analogdeck = stacks.AnalogDeck(core, bus_address=2)
-
 dmm = analogdeck.dmm
 
 
@@ -21,21 +20,12 @@ RATED_OUTPUT = 2 # mV/V
 LOAD_CELL_SCALE = RATED_OUTPUT * EXCITATION_VOLTAGE # mV
 LOAD_CELL_FORCE = 1000 #lbf, pound force
 
-
+# Fancy smancy "startup" sequence
 for i in range(16,127):
 
     core.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
     analogdeck.rgbled.set(int(("0x00FF00" + hex(i)[2:]), 16))
 # End of "startup" sequence
-
-
-#
-# sine_samples = []
-# for i in range(WAVE_GEN_SAMPLES):
-#     sine_samples.append(LOAD_CELL_SCALE/ 1000 * (math.sin(math.pi * i/ WAVE_GEN_SAMPLES)) ** 8)
-#
-# analogdeck.wavegen.update_waveform(samplerate_hz=60, samples=sine_samples)
-# analogdeck.wavegen.set_control(analogdeck.wavegen.MODE_WAVEFREERUN)
 
 
 # Load the csv file

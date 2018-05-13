@@ -11,10 +11,9 @@ import csv
 import numpy as np
 import random
 
+# Connects to the Stacks
 core = stacks.Core(host="192.168.2.49")
-
 analogdeck = stacks.AnalogDeck(core, bus_address=2)
-
 dmm = analogdeck.dmm
 
 ## Used for the actual load cell data calculation
@@ -40,6 +39,7 @@ csv_writer = csv.writer(csv_file, delimiter=' ', quotechar='"', quoting=csv.QUOT
 # Enables the ADC's on the core of the Stacks
 core.adc.enable(0,1,2,3)
 
+samples = dict()
 count = 0
 csv_row = []
 voltage_samples = []
@@ -64,6 +64,7 @@ while (time.time() - start) < SAMPLE_TIME:
                                 * [1000 (mv/V)]
         '''
         # Prints data to a csv file
+        samples
 
         csv_row += [i,(time.time() - start), voltage_sample[i], force_reading[i]]
         # Prints data to the console
@@ -85,22 +86,8 @@ s2 = 200*np.exp(-t)*np.sin(3* np.pi * t) + 250
 s3 = 200*np.sin(2 * np.pi * t)+225
 s4 = np.add(np.add(s1, s2), s3)
 
-# samples =
-#
-#
-#
-
 # sample_time = []
 samples = dict()
-
-
-
-def animate(i):
-
-    # First bracket is to get to the samples
-    for i in range(NUM_LOAD_CELLS):
-        samples[i].clear()
-        samples[i].plot(samples)
 
 
 ani = animation.FuncAnimation(fig, animate, interval=25)#
@@ -173,3 +160,11 @@ for i in range(16,127):
     analogdeck.rgbled.set(int(("0xFF00FF" + hex(i)[2:]), 16))
     time.sleep(3/1000)
 # End of "startup" sequence
+
+
+def animate(i):
+
+    # First bracket is to get to the samples
+    for i in range(NUM_LOAD_CELLS):
+        samples[i].clear()
+        samples[i].plot(samples)
