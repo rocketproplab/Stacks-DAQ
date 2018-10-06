@@ -17,6 +17,8 @@ Additional packages needed for install
  - Git
    - Linux (Debian/Ubuntu),  ``` sudo apt install git ```
    - Windows, Download from [here](https://git-scm.com/download/win)
+   - Mac
+     - Using [Homebrew](https://gist.github.com/derhuerst/1b15ff4652a867391f03#file-mac-md) or manually [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
  - Subinitial Stacks Library ``` pip3 install --user git+https://bitbucket.org/subinitial/subinitial.git ```
 
