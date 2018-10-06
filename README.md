@@ -20,4 +20,14 @@ Additional packages needed for install
 
  - Subinitial Stacks Library ``` pip3 install --user git+https://bitbucket.org/subinitial/subinitial.git ```
 
+## **Connecting to the Stacks Core**
+ - The default Stacks IP address is 192.168.1.49, but currently the IP address is 192.168.2.49 (the IP address can be changed ) 
+ - Set the IP address on your machine to any 192.168.2.xxx IP address manually with netmask or (255.255.255.0)
+ - To change the IP address of the Stacks refer to [here](https://www.subinitial.com/misc/pub/SD00170_Stacks_Connectivity_Troubleshooting_Guide.pdf)
+ - Ping the IP address of the Stacks to ensure connectivity
+
+``` 
+ping 192.168.2.49
+```
+
 > Documentation created by [johnnysedor](https://github.com/johnnysedor)
