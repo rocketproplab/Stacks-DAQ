@@ -5,38 +5,19 @@
 Run in terminal
 ``` python --version ```
 
-If Python is not downloaded, install using apt
-``` sudo apt install python3 ```
+* If Python is not downloaded, install using apt
+```
+sudo apt install python3
+```
 
 
-        *   Or download from [here](https://www.python.org/downloads/)
-    2.  Additional packages needed for install
-           Git
-               Linux (Debian/Ubuntu)
+* Or download from [here](https://www.python.org/downloads/)
 
-                ```
-                sudo apt install git
-                ```
+Additional packages needed for install
+ - Git
+   - Linux (Debian/Ubuntu),  ``` sudo apt install git ```
+   - Windows, Download from [here](https://git-scm.com/download/win)
 
-
-               Windows
-
-                Download from [here](https://git-scm.com/download/win)
-
-           Ensure the Stacks python library is installed
-               Inside a python shell
-
-                ```python
-                >>> import subinitial.stacks as stacks
-                >>> print("Stacks Version:", stacks.VERSION_STACKS[0])
-                Stacks Version: 1
-                ```
-
-
-               If not installed, install using pip3
-
-                ```
-                pip3 install --user git+https://bitbucket.org/subinitial/subinitial.git
-                ```
+ - Subinitial Stacks Library ``` pip3 install --user git+https://bitbucket.org/subinitial/subinitial.git ```
 
 > Documentation created by [johnnysedor](https://github.com/johnnysedor)
