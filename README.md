@@ -5,11 +5,7 @@
 Run in terminal
 ``` python --version ```
 
-* If Python is not downloaded, install using apt
-```
-sudo apt install python3
-```
-
+* If Python is not downloaded, install using apt ``` sudo apt install python3 ```
 
 * Or download from [here](https://www.python.org/downloads/)
 
@@ -24,12 +20,8 @@ Additional packages needed for install
 
 ## **Connecting to the Stacks Core**
  - The default Stacks IP address is 192.168.1.49, but currently the IP address is 192.168.2.49 (the IP address can be changed ) 
- - Set the IP address on your machine to any 192.168.2.xxx IP address manually with netmask or (255.255.255.0)
+ - Set the IP address on your machine to any 192.168.2.xxx IP address manually with netmask 255.255.255.0
  - To change the IP address of the Stacks refer to [here](https://www.subinitial.com/misc/pub/SD00170_Stacks_Connectivity_Troubleshooting_Guide.pdf)
- - Ping the IP address of the Stacks to ensure connectivity
-
-``` 
-ping 192.168.2.49
-```
+ - Ping the IP address of the Stacks to ensure connectivity ``` ping 192.168.2.49 ```
 
 > Documentation created by [johnnysedor](https://github.com/johnnysedor)
